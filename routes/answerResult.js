@@ -6,7 +6,6 @@ const _ = require("lodash")
 router.post("/", (req, res) => {
     MongoClient.connect(CONNECTION_URL, OPTIONS, (error, client) => {
         const db = client.db(DATABASE);
-        console.log(req.body)
         db.collection("dummyAnswerHistory", (error, collection) => {
             collection.insertMany(_.range(10).map((num) => (
                 {

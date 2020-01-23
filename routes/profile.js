@@ -2,6 +2,7 @@ const {CONNECTION_URL, DATABASE, OPTIONS} = require("../config/mongodb.config")
 const router = require("express").Router()
 const MongoClient = require("mongodb").MongoClient
 
+
 router.get("/*", (req, res) => {
     //得意分野の取得、ポイントの計算
     MongoClient.connect(CONNECTION_URL, OPTIONS, (error, client) => {
@@ -94,9 +95,9 @@ router.get("/*", (req, res) => {
                                 db.collection("personal", (error, collection) => {
                                     collection.find({username: {$eq: req.query.user}}).toArray((error, docs) => {
                                         const point = plus - minus;
-                                        docs[0].point = point;
-                                        docs[0].strongField = strongField;
-                                        docs[0].weakField = weakField;
+                                        docs[0] ? docs[0].point = point : 0;
+                                        docs[0] ? docs[0].strongField = strongField : "";
+                                        docs[0] ? docs[0].weakField = weakField : "";
                                         res.json(docs[0])
                                     })
                                 })
