@@ -6,7 +6,7 @@ const MongoClient = require("mongodb").MongoClient
 router.get("/", (req, res) => {
     MongoClient.connect(CONNECTION_URL, OPTIONS, (error, client) => {
         const db = client.db(DATABASE);
-        db.collection("dummyIntermediateQuiz", (error, collection) => {
+        db.collection("IntermediateQuiz", (error, collection) => {
             collection.find().toArray((error, docs) => {
                 res.json(docs)
             })

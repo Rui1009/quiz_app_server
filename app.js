@@ -11,13 +11,14 @@ app.use(cors())
 
 app.disable("x-powered-by")
 
-// app.use(CookieParser())
-// app.use(session({
-//     secret: SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: true,
-//     name: "sid"
-// }))
+app.use(CookieParser())
+app.use(session({
+    secret: "secret-key",
+    resave: true,
+    saveUninitialized: true,
+    name: "sid"
+}))
+
 
 app.use(bodyPaser.urlencoded({extended: true}))
 app.use(bodyPaser.json())

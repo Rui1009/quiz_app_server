@@ -17,24 +17,24 @@ router.get("/*", (req, res) => {
                 //得意分野取得
                 let fieldArray = [
                     {
-                        field: "Geography", point: 0
+                        field: "原価管理の基礎的分類", point: 0
                     },
                     {
-                        field: "History", point: 0
+                        field: "見積原価計算", point: 0
                     },
                     {
-                        field: "Entertainment", point: 0
+                        field: "実際原価計算", point: 0
                     }
                 ];
                 docs.map((doc) => {
                     switch (doc.field) {
-                        case "Geography":
+                        case "原価管理の基礎的分類":
                             fieldArray[0].point++;
                         break;
-                        case "History":
+                        case "見積原価計算":
                             fieldArray[1].point++;
                         break;
-                        case "Entertainment":
+                        case "実際原価計算":
                             fieldArray[2].point++;
                         break;
                         default:
@@ -60,24 +60,24 @@ router.get("/*", (req, res) => {
                             //苦手分野の取得
                             let fieldArray = [
                                 {
-                                    field: "Geography", point: 0
+                                    field: "原価管理の基礎的分類", point: 0
                                 },
                                 {
-                                    field: "History", point: 0
+                                    field: "見積原価計算", point: 0
                                 },
                                 {
-                                    field: "Entertainment", point: 0
+                                    field: "実際原価計算", point: 0
                                 }
                             ];
                             docs.map((doc) => {
                                 switch (doc.field) {
-                                    case "Geography":
+                                    case "原価管理の基礎的分類":
                                         fieldArray[0].point++;
                                         break;
-                                    case "History":
+                                    case "見積原価計算":
                                         fieldArray[1].point++;
                                         break;
-                                    case "Entertainment":
+                                    case "実際原価計算":
                                         fieldArray[2].point++;
                                         break;
                                     default:
@@ -92,10 +92,38 @@ router.get("/*", (req, res) => {
                             const weakField = newArray[0].field;
                             MongoClient.connect(CONNECTION_URL, OPTIONS, (error, client) => {
                                 const db = client.db(DATABASE);
+                                let status;
                                 db.collection("personal", (error, collection) => {
                                     collection.find({username: {$eq: req.query.user}}).toArray((error, docs) => {
                                         const point = plus - minus;
+                                        switch (true) {
+                                            case point <= 50:
+                                                status = "Beginner"
+                                                break;
+                                            case point <=100:
+                                                status = "Amateur"
+                                                break;
+                                            case point <= 300:
+                                                status = "Intermediate"
+                                                break;
+                                            case point <= 500:
+                                                status = "Elite"
+                                                break;
+                                            case point <= 750:
+                                                status = "Professional"
+                                                break;
+                                            case point <= 1000:
+                                                status = "Master"
+                                                break;
+                                            case point <= 1500:
+                                                status = "Top player"
+                                                break;
+                                            default:
+                                                status = "GOD"
+                                                break;
+                                        }
                                         docs[0] ? docs[0].point = point : 0;
+                                        docs[0] ? docs[0].status = status : "";
                                         docs[0] ? docs[0].strongField = strongField : "";
                                         docs[0] ? docs[0].weakField = weakField : "";
                                         res.json(docs[0])
