@@ -5,7 +5,6 @@ const MongoClient = require("mongodb").MongoClient
 
 
 router.post("/", authenticate(), (req, res) => {
-    console.log(req.session.passport.user, "b")
     res.status(200).json({
         isAuthorized: true
     });

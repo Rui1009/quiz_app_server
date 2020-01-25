@@ -4,6 +4,7 @@ const MongoClient = require("mongodb").MongoClient
 
 
 router.get("/", (req, res) => {
+    console.log(req, "ddd")
     MongoClient.connect(CONNECTION_URL, OPTIONS, (error, client) => {
         const db = client.db(DATABASE);
         db.collection("EasyQuiz", (error, collection) => {

@@ -1,7 +1,6 @@
 const express = require("express")
 const app = express()
 const cors = require('cors')
-const {SESSION_SECRET} = require("./config/app.config")
 const bodyPaser = require("body-parser")
 const CookieParser = require("cookie-parser")
 const session = require("express-session")
