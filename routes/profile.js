@@ -3,11 +3,13 @@ const router = require("express").Router()
 const MongoClient = require("mongodb").MongoClient
 const tokens = new require("csrf")()
 
-router.get("/*", (req, res) => {
+router.get("/", (req, res) => {
     tokens.secret((error, secret) => {
-        const token = tokens.create(secret)
-        req.session._csrf = secret
-        res.cookie("_csrf", token)
+        let token = tokens.create(secret);
+        req.session._csrf = secret;
+        res.cookie("_csrf", token, {secure: false, httpOnly: false})
+        console.log(req);
+
         MongoClient.connect(CONNECTION_URL, OPTIONS, (error, client) => {
             const db = client.db(DATABASE);
             db.collection("dummyAnswerHistory", (error, collection) => {

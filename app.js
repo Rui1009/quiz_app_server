@@ -13,9 +13,13 @@ app.disable("x-powered-by")
 app.use(CookieParser())
 app.use(session({
     secret: "secret-key",
-    resave: true,
-    saveUninitialized: true,
-    name: "sid"
+    resave: false,
+    saveUninitialized: false,
+    name: "sid",
+    cookie: {
+        httpOnly: false,
+        maxAge: 1000 * 60 * 60 * 24 * 30
+    }
 }))
 
 
