@@ -38,4 +38,4 @@ app.use("/intermediateQuiz", require("./routes/intermediateQuiz"))
 app.use("/answerResult", require("./routes/answerResult"))
 app.use("/postQuiz", require("./routes/postQuiz"))
 
-app.listen(process.env.PORT)
+app.listen(process.env.PORT || 9001)
