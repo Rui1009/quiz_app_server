@@ -28,30 +28,72 @@ router.get("/", (req, res) => {
                             field: "見積原価計算", point: 0
                         },
                         {
-                            field: "実際原価計算", point: 0
+                            field: "実際単純個別原価計算", point: 0
+                        },
+                        {
+                            field: "商的工業会計", point: 0
+                        },
+                        {
+                            field: "実際部門別個別原価計算", point: 0
+                        },
+                        {
+                            field: "実際総合原価計算", point: 0
+                        },
+                        {
+                            field: "標準原価計算", point: 0
+                        },
+                        {
+                            field: "原価分析", point: 0
+                        },
+                        {
+                            field: "直接原価計算", point: 0
+                        },
+                        {
+                            field: "企業予算", point: 0
+                        },
+                        {
+                            field: "資本予算", point: 0
                         }
                     ];
                     docs.map((doc) => {
                         switch (doc.field) {
                             case "原価管理の基礎的分類":
-                                fieldArray[0].point++;
+                                fieldArray[0].point = fieldArray[0].point + 3;
                                 break;
                             case "見積原価計算":
-                                fieldArray[1].point++;
+                                fieldArray[1].point = fieldArray[1].point + 3;
                                 break;
-                            case "実際原価計算":
-                                fieldArray[2].point++;
+                            case "実際単純個別原価計算":
+                                fieldArray[2].point = fieldArray[2].point + 3;
+                                break;
+                            case "商的工業会計":
+                                fieldArray[3].point = fieldArray[3].point + 3;
+                                break;
+                            case "実際部門別個別原価計算":
+                                fieldArray[4].point = fieldArray[4].point + 3;
+                                break;
+                            case "実際総合原価計算":
+                                fieldArray[5].point = fieldArray[5].point + 3;
+                                break;
+                            case "標準原価計算":
+                                fieldArray[6].point = fieldArray[6].point + 3;
+                                break;
+                            case "原価分析":
+                                fieldArray[7].point = fieldArray[7].point + 3;
+                                break;
+                            case "直接原価計算":
+                                fieldArray[8].point = fieldArray[8].point + 3;
+                                break;
+                            case "企業予算":
+                                fieldArray[9].point = fieldArray[9].point + 3;
+                                break;
+                            case "資本予算":
+                                fieldArray[10].point = fieldArray[10].point + 3;
                                 break;
                             default:
                                 return null
                         }
                     })
-                    let newArray = fieldArray.sort((a, b) => {
-                        if (a.point < b.point) return 1;
-                        if (a.point > b.point) return -1;
-                        return 0
-                    })
-                    const strongField = newArray[0].field;
                     //苦手分野の取得、ポイントの計算
                     MongoClient.connect(CONNECTION_URL, OPTIONS, (error, client) => {
                         const db = client.db(DATABASE);
@@ -63,27 +105,40 @@ router.get("/", (req, res) => {
                                     doc.level === "easy" ?  minus = minus + 2 : minus = minus + 1
                                 }
                                 //苦手分野の取得
-                                let fieldArray = [
-                                    {
-                                        field: "原価管理の基礎的分類", point: 0
-                                    },
-                                    {
-                                        field: "見積原価計算", point: 0
-                                    },
-                                    {
-                                        field: "実際原価計算", point: 0
-                                    }
-                                ];
                                 docs.map((doc) => {
                                     switch (doc.field) {
                                         case "原価管理の基礎的分類":
-                                            fieldArray[0].point++;
+                                            fieldArray[0].point = fieldArray[0].point - 2;
                                             break;
                                         case "見積原価計算":
-                                            fieldArray[1].point++;
+                                            fieldArray[1].point = fieldArray[1].point - 2;
                                             break;
-                                        case "実際原価計算":
-                                            fieldArray[2].point++;
+                                        case "実際単純個別原価計算":
+                                            fieldArray[2].point = fieldArray[2].point - 2;
+                                            break;
+                                        case "商的工業会計":
+                                            fieldArray[3].point = fieldArray[3].point - 2;
+                                            break;
+                                        case "実際部門別個別原価計算":
+                                            fieldArray[4].point = fieldArray[4].point - 2;
+                                            break;
+                                        case "実際総合原価計算":
+                                            fieldArray[5].point = fieldArray[5].point - 2;
+                                            break;
+                                        case "標準原価計算":
+                                            fieldArray[6].point = fieldArray[6].point - 2;
+                                            break;
+                                        case "原価分析":
+                                            fieldArray[7].point = fieldArray[7].point - 2;
+                                            break;
+                                        case "直接原価計算":
+                                            fieldArray[8].point = fieldArray[8].point - 2;
+                                            break;
+                                        case "企業予算":
+                                            fieldArray[9].point = fieldArray[9].point - 2;
+                                            break;
+                                        case "資本予算":
+                                            fieldArray[10].point = fieldArray[10].point - 2;
                                             break;
                                         default:
                                             return null
@@ -94,7 +149,9 @@ router.get("/", (req, res) => {
                                     if (a.point > b.point) return -1;
                                     return 0
                                 })
-                                const weakField = newArray[0].field;
+                                const strongField = newArray[0].field;
+                                const weakField = newArray[10].field;
+                                console.log(fieldArray)
                                 MongoClient.connect(CONNECTION_URL, OPTIONS, (error, client) => {
                                     const db = client.db(DATABASE);
                                     let status;
@@ -105,7 +162,7 @@ router.get("/", (req, res) => {
                                                 case point <= 50:
                                                     status = "Beginner"
                                                     break;
-                                                case point <=100:
+                                                case point <= 100:
                                                     status = "Amateur"
                                                     break;
                                                 case point <= 300:
@@ -127,11 +184,23 @@ router.get("/", (req, res) => {
                                                     status = "GOD"
                                                     break;
                                             }
-                                            docs[0] ? docs[0].point = point : 0;
-                                            docs[0] ? docs[0].status = status : "";
-                                            docs[0] ? docs[0].strongField = strongField : "";
-                                            docs[0] ? docs[0].weakField = weakField : "";
-                                            res.json(docs[0])
+
+                                            MongoClient.connect(CONNECTION_URL, OPTIONS, (error, client) => {
+                                                const db = client.db(DATABASE);
+                                                let bonusPoint = 0;
+                                                db.collection("personal", (error, collection) => {
+                                                    collection.find({username: {$eq: req.query.user}}).toArray((error, elems) => {
+                                                        for (let elem of elems) {
+                                                            bonusPoint = bonusPoint + elem.bonusPoint
+                                                        }
+                                                        docs[0] ? docs[0].point = point + bonusPoint : 0;
+                                                        docs[0] ? docs[0].status = status : "";
+                                                        docs[0] ? docs[0].strongField = strongField : "";
+                                                        docs[0] ? docs[0].weakField = weakField : "";
+                                                        res.json(docs[0])
+                                                    })
+                                                })
+                                            })
                                         })
                                     })
                                 })

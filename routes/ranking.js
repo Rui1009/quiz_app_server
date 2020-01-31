@@ -26,7 +26,15 @@ router.get("/", (req, res) => {
                                             for (let elem of elems) {
                                                 elem.level === "easy" ?  minus = minus + 2 : minus = minus + 1
                                             }
-                                            const point = plus - minus;
+                                            MongoClient.connect(CONNECTION_URL, OPTIONS, (error, client) => {
+                                                const db = client.db(DATABASE);
+                                                let bonusPoint = 0;
+                                                db.collection("personal", (error, collection) => {
+                                                    collection.find({username: {$eq: doc.username}}).toArray((error, items) => {
+                                                        for (let item of items) {
+                                                            bonusPoint = bonusPoint + item.bonusPoint
+                                                        }
+                                                        const point = plus - minus + bonusPoint;
                                             responseArray.push({username: doc.username, point: point})
                                             console.log(responseArray)
                                             //ポイントの高い順にソート
@@ -37,6 +45,9 @@ router.get("/", (req, res) => {
                                             })
                                             responseArray.length === docs.length ?
                                                 res.json(newArray) : null
+                                                    })
+                                                })
+                                            })
                                         })
                                     })
                                 })

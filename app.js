@@ -36,5 +36,6 @@ app.use("/ranking", require("./routes/ranking"))
 app.use("/easyQuiz", require("./routes/easyQuiz"))
 app.use("/intermediateQuiz", require("./routes/intermediateQuiz"))
 app.use("/answerResult", require("./routes/answerResult"))
+app.use("/postQuiz", require("./routes/postQuiz"))
 
 app.listen(9001)
