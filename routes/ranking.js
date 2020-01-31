@@ -44,7 +44,7 @@ router.get("/", (req, res) => {
                                                 return 0
                                             })
                                             responseArray.length === docs.length ?
-                                                res.json(newArray) : null
+                                                res.json(newArray.slice(0, 9)) : null
                                                     })
                                                 })
                                             })
